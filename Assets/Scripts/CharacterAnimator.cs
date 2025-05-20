@@ -35,7 +35,14 @@ public class CharacterAnimator : MonoBehaviour
         _animator.SetTrigger(AnimatorData.Params.DyingHash);
 
         float animationLength = GetCurrentAnimationLength();
-        Invoke(nameof(HandleDeathAnimationCompletion), animationLength);
+        StartCoroutine(WaitForDeathAnimation());
+    }
+
+    private IEnumerator WaitForDeathAnimation()
+    {
+        float animationLength = GetCurrentAnimationLength();
+        yield return new WaitForSeconds(animationLength);
+        HandleDeathAnimationCompletion();
     }
 
     private float GetCurrentAnimationLength()

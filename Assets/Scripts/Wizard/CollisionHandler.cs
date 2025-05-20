@@ -5,8 +5,9 @@ public class CollisionHandler : MonoBehaviour
 {
     public event Action CollisionDetected;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        CollisionDetected?.Invoke();
+        if(!other.TryGetComponent<Coin>(out _))
+            CollisionDetected?.Invoke();
     }
 }

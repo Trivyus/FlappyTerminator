@@ -5,7 +5,6 @@ public class CoinCollector : MonoBehaviour
 {
     private const string CoinsKey = "PlayerCoins";
 
-    [SerializeField] private string _coinTag = "Coin";
     [SerializeField] private TMP_Text _scoreText;
     
     public int CurrentScore {  get; private set; }
@@ -25,7 +24,7 @@ public class CoinCollector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(_coinTag))
+        if (other.TryGetComponent<Coin>(out _))
         {
             UpdateScore();
         }

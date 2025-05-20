@@ -10,7 +10,6 @@ public class Wizard : MonoBehaviour
     [SerializeField] private CollisionHandler _collisionHandler;
     [SerializeField] private DeathMenu _deathMenu;
     [SerializeField] private CoinCollector _coinCollector;
-
     [SerializeField] private Pool<Projectile> _projectilePool;
 
     private Rigidbody2D _rigidbody;
@@ -54,12 +53,14 @@ public class Wizard : MonoBehaviour
         if (yVelocity > 0.1f && !_isRising)
         {
             _isRising = true;
+            _shootingSystem.SetVerticalAngleModifier(1f);
             _characterAnimator.UpdateJumping(_isRising);
             _characterAnimator.UpdateFalling(!_isRising);
         }
         else if (yVelocity < -0.1f && _isRising)
         {
             _isRising = false;
+            _shootingSystem.SetVerticalAngleModifier(-1f);
             _characterAnimator.UpdateJumping(_isRising);
             _characterAnimator.UpdateFalling(!_isRising);
         }
@@ -71,7 +72,7 @@ public class Wizard : MonoBehaviour
 
         _isDead = true;
 
-        _mover.ForceStop();
+        _mover.StopMoving();
         _shootingSystem.enabled = false;
         _inputReader.enabled = false;
         _characterAnimator.TriggerDeath();

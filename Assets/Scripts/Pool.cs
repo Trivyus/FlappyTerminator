@@ -9,8 +9,9 @@ public class Pool<T> : MonoBehaviour where T : PoolableObject<T>
     [SerializeField] private float _objectLifetime = 3f;
 
     private Queue<T> _availableObjects = new();
+    private Coroutine _coroutine;
 
-    public event Action<T> OnObjectTakenFromPool;
+    public event Action<T> ObjectTakedFromPool;
 
     private void OnDisable()
     {
@@ -26,16 +27,17 @@ public class Pool<T> : MonoBehaviour where T : PoolableObject<T>
             CreateNewObject();
 
         T objectToDeque = _availableObjects.Dequeue();
-        OnObjectTakenFromPool?.Invoke(objectToDeque);
-        StartCoroutine(DeactivateAfterLifetime(objectToDeque));
+        ObjectTakedFromPool?.Invoke(objectToDeque);
+        _coroutine = StartCoroutine(DeactivateAfterLifetime(objectToDeque));
         return objectToDeque;
     }
 
     public void ReturnObject(T poolableObject)
     {
-        if (poolableObject == null) 
+        if (poolableObject == null)
             return;
 
+        StopWaitingDeactivation();
         poolableObject.ResetState();
         poolableObject.gameObject.SetActive(false);
         _availableObjects.Enqueue(poolableObject);
@@ -54,5 +56,11 @@ public class Pool<T> : MonoBehaviour where T : PoolableObject<T>
 
         if (poolebleObject.gameObject.activeInHierarchy)
             ReturnObject(poolebleObject);
+    }
+
+    private void StopWaitingDeactivation()
+    {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
     }
 }

@@ -37,8 +37,8 @@ public class EnemySpawner : MonoBehaviour
         enemy.gameObject.SetActive(true);
         enemy.transform.position = GetSpawnPosition();
 
-        enemy.Collided -= DeactivateAfterCollision;
-        enemy.Collided += DeactivateAfterCollision;
+        enemy.Triggered -= DeactivateAfterTriggered;
+        enemy.Triggered += DeactivateAfterTriggered;
     }
 
     private Vector3 GetSpawnPosition()
@@ -51,11 +51,11 @@ public class EnemySpawner : MonoBehaviour
         return new Vector3(spawnX, spawnY, 0);
     }
 
-    private void DeactivateAfterCollision(Enemy enemy)
+    private void DeactivateAfterTriggered(Enemy enemy)
     {
         if (enemy != null && enemy.gameObject.activeInHierarchy)
         {
-            enemy.Collided -= DeactivateAfterCollision;
+            enemy.Triggered -= DeactivateAfterTriggered;
             _coinsSpawner.Drop(enemy.transform);
             _enemyPool.ReturnObject(enemy);
         }

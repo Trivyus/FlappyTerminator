@@ -18,7 +18,7 @@ public class Mover : MonoBehaviour
         _rigidbody.velocity = new Vector2(moveDirection * _moveSpeed, _rigidbody.velocity.y);
     }
 
-    public void ForceStop()
+    public void StopMoving()
     {
         if (_rigidbody != null)
         {
