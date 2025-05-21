@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         Enemy enemy = _enemyPool.GetObject();
-        enemy.SetProjectilePool(_projectilePool);
+        enemy.GetComponent<ShootingSystem>().SetProjectilePool(_projectilePool);
         enemy.gameObject.SetActive(true);
         enemy.transform.position = GetSpawnPosition();
 
