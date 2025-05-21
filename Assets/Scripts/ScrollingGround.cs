@@ -20,7 +20,7 @@ public class ScrollingGround : MonoBehaviour
         _nextSwapPointX = _groundPieces[^1].position.x;
     }
 
-    void Update()
+    private void Update()
     {
         float cameraRightEdge = _mainCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x;
 
