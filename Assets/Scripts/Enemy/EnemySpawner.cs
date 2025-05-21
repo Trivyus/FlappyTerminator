@@ -9,10 +9,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float _spawnDistanceFromCamera = 1.5f;
     [SerializeField] private float _minHeight = -10f;
     [SerializeField] private float _maxHeight = 10f;
+    [SerializeField] private float _enemyLifetime = 15f;
 
     [SerializeField] private CoinsSpawner _coinsSpawner;
     [SerializeField] private Pool<Enemy> _enemyPool;
     [SerializeField] private Pool<Projectile> _projectilePool;
+
+    private Coroutine _coroutine;
 
     private void Start()
     {
@@ -37,6 +40,7 @@ public class EnemySpawner : MonoBehaviour
         enemy.gameObject.SetActive(true);
         enemy.transform.position = GetSpawnPosition();
 
+        _coroutine = StartCoroutine(DeactivateAfterLifetime(enemy));
         enemy.Triggered -= DeactivateAfterTriggered;
         enemy.Triggered += DeactivateAfterTriggered;
     }
@@ -51,13 +55,28 @@ public class EnemySpawner : MonoBehaviour
         return new Vector3(spawnX, spawnY, 0);
     }
 
+    private IEnumerator DeactivateAfterLifetime(Enemy enemy)
+    {
+        yield return new WaitForSeconds(_enemyLifetime);
+
+        if (enemy.gameObject.activeInHierarchy)
+            _enemyPool.ReturnObject(enemy);
+    }
+
     private void DeactivateAfterTriggered(Enemy enemy)
     {
         if (enemy != null && enemy.gameObject.activeInHierarchy)
         {
             enemy.Triggered -= DeactivateAfterTriggered;
+            StopWaitingDeactivation();
             _coinsSpawner.Drop(enemy.transform);
             _enemyPool.ReturnObject(enemy);
         }
+    }
+
+    private void StopWaitingDeactivation()
+    {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
     }
 }

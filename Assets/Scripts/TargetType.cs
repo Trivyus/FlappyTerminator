@@ -1,1 +1,5 @@
-public enum TargetType { Enemy, Wizard}
+public enum TargetType 
+{ 
+    Enemy,
+    Wizard
+}

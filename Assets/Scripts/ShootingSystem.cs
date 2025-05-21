@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class ShootingSystem : MonoBehaviour
@@ -8,11 +9,13 @@ public class ShootingSystem : MonoBehaviour
     [SerializeField] private float _projectileSpeed = 15f;
     [SerializeField] private float _verticalAngleModifier = 0f;
     [SerializeField] private float _maxVerticalAngle = 30f;
+    [SerializeField] private float _projectileLifetime = 8f;
 
     private Pool<Projectile> _projectilePool;
     private float _nextFireTime;
+    private Coroutine _coroutine;
 
-    public event Action Shot;
+    public event Action Shooted;
 
     public void SetProjectilePool(Pool<Projectile> projectilePool)
     {
@@ -24,7 +27,7 @@ public class ShootingSystem : MonoBehaviour
         if (Time.time >= _nextFireTime)
         {
             Shoot(direction.normalized);
-            Shot?.Invoke();
+            Shooted?.Invoke();
             _nextFireTime = Time.time + _fireRate;
         }
     }
@@ -48,18 +51,32 @@ public class ShootingSystem : MonoBehaviour
 
         Projectile projectile = _projectilePool.GetObject();
         projectile.gameObject.SetActive(true);
-        projectile.transform.position = _firePoint.position;
-        projectile.transform.right = direction;
-        projectile.SetDirection(direction, _projectileSpeed);
+        projectile.SetDirection(direction, _projectileSpeed, _firePoint);
+        _coroutine = StartCoroutine(DeactivateAfterLifetime(projectile));
         projectile.Triggered -= DeactivateAfterTriggered;
         projectile.Triggered += DeactivateAfterTriggered;
     }
 
+    private IEnumerator DeactivateAfterLifetime(Projectile projectile)
+    {
+        yield return new WaitForSeconds(_projectileLifetime);
+
+        if (projectile.gameObject.activeInHierarchy)
+            _projectilePool.ReturnObject(projectile);
+    }
+
     private void DeactivateAfterTriggered(Projectile projectile)
     {
-        if (projectile.gameObject.activeInHierarchy)
+        if (projectile != null && projectile.gameObject.activeInHierarchy)
         {
+            StopWaitingDeactivation();
             _projectilePool.ReturnObject(projectile);
         }
+    }
+
+    private void StopWaitingDeactivation()
+    {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
     }
 }

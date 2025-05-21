@@ -1276,7 +1276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectPrefab: {fileID: 224712358858613814, guid: 3a59e995778805d4cbf9b7d9e9c52c98, type: 3}
-  _objectLifetime: 15
 --- !u!114 &820175856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,6 +1294,7 @@ MonoBehaviour:
   _spawnDistanceFromCamera: 1.5
   _minHeight: -8
   _maxHeight: 8
+  _enemyLifetime: 10
   _coinsSpawner: {fileID: 820175860}
   _enemyPool: {fileID: 820175855}
   _projectilePool: {fileID: 820175858}
@@ -1326,7 +1326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectPrefab: {fileID: 5117007867333640382, guid: d3c01720c2df2e74593316458b383303, type: 3}
-  _objectLifetime: 8
 --- !u!114 &820175859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1340,7 +1339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectPrefab: {fileID: 3229779175837245276, guid: a5869299c9fcd4e44a5ca494382d0743, type: 3}
-  _objectLifetime: 10
 --- !u!114 &820175860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1353,7 +1351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3626f04ef44724eb67e016c94c923f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _coinCollector: {fileID: 1828271606}
   _coinsPool: {fileID: 820175859}
+  _coinLifetime: 15
 --- !u!1 &840014928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,6 +1848,7 @@ GameObject:
   - component: {fileID: 1111196450}
   - component: {fileID: 1111196451}
   - component: {fileID: 1111196452}
+  - component: {fileID: 1111196453}
   m_Layer: 0
   m_Name: Ground1
   m_TagString: Untagged
@@ -1967,6 +1968,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 18.36, y: 0.22}
   m_EdgeRadius: 0
+--- !u!114 &1111196453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111196449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11738339898ef064b9132af7a8b1c677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1159928989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,6 +2128,7 @@ GameObject:
   - component: {fileID: 1168482470}
   - component: {fileID: 1168482474}
   - component: {fileID: 1168482475}
+  - component: {fileID: 1168482476}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2239,6 +2253,19 @@ MonoBehaviour:
   _mainMenuScene: MainMenu
   _deathPanel: {fileID: 2111002796}
   _scoreText: {fileID: 1606955202}
+--- !u!114 &1168482476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168482469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5241b327c5298474989fc27a6698e12a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreText: {fileID: 1689997338}
 --- !u!1 &1174047218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2786,7 +2813,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectPrefab: {fileID: 5117007867333640382, guid: 222c53dc44db1814ebde59d05ec9e7aa, type: 3}
-  _objectLifetime: 5
 --- !u!4 &1582512115
 Transform:
   m_ObjectHideFlags: 0
@@ -3217,6 +3243,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1168482475}
     - target: {fileID: 3095502778150966054, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: _scoreDisplay
+      value: 
+      objectReference: {fileID: 1168482476}
+    - target: {fileID: 3095502778150966054, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: _projectilePool
       value: 
       objectReference: {fileID: 1582512114}
@@ -3268,6 +3298,10 @@ PrefabInstance:
       propertyPath: _scoreText
       value: 
       objectReference: {fileID: 1689997338}
+    - target: {fileID: 4936776083945099200, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: _scoreDisplay
+      value: 
+      objectReference: {fileID: 1168482476}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3282,6 +3316,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b244660cec2f40244829d4819c09f243, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1828271606 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4936776083945099200, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+  m_PrefabInstance: {fileID: 1828271604}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74fc18d0434fb746869f6cfc3939ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1838924180
@@ -3628,6 +3673,7 @@ GameObject:
   - component: {fileID: 2144600647}
   - component: {fileID: 2144600648}
   - component: {fileID: 2144600649}
+  - component: {fileID: 2144600650}
   m_Layer: 0
   m_Name: Ground2
   m_TagString: Untagged
@@ -3747,6 +3793,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 18.36, y: 0.22}
   m_EdgeRadius: 0
+--- !u!114 &2144600650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144600646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11738339898ef064b9132af7a8b1c677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

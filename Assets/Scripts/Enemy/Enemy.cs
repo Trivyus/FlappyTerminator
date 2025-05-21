@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
-public class Enemy : PoolableObject<Enemy>
+public class Enemy : PoolableObject<Enemy>, ICollisionTarget
 {
     [SerializeField] private Mover _mover;
     [SerializeField] private ShootingSystem _shootingSystem;

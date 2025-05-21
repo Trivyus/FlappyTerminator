@@ -242,6 +242,7 @@ MonoBehaviour:
   _projectileSpeed: 15
   _verticalAngleModifier: 1
   _maxVerticalAngle: 30
+  _projectileLifetime: 3
 --- !u!114 &188080747697856759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74fc18d0434fb746869f6cfc3939ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinTag: Coin
   _scoreText: {fileID: 0}
 --- !u!1001 &4105362946132217688
 PrefabInstance:

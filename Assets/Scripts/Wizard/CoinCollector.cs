@@ -1,44 +1,18 @@
-using TMPro;
+using System;
 using UnityEngine;
 
 public class CoinCollector : MonoBehaviour
 {
-    private const string CoinsKey = "PlayerCoins";
+    [SerializeField] private ScoreDisplay _scoreDisplay;
 
-    [SerializeField] private TMP_Text _scoreText;
-    
-    public int CurrentScore {  get; private set; }
-
-    private void Start()
-    {
-        CurrentScore = PlayerPrefs.GetInt(CoinsKey, 0);
-        ShowScore();
-    }
-
-    public void ResetScore()
-    {
-        CurrentScore = 0;
-        ShowScore();
-        PlayerPrefs.SetInt(CoinsKey, CurrentScore);
-    }
+    public event Action<Coin> Triggered;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Coin>(out _))
+        if (other.TryGetComponent(out Coin coin))
         {
-            UpdateScore();
+            Triggered?.Invoke(coin);
+            _scoreDisplay.IncreaseScore();
         }
-    }
-
-    private void UpdateScore()
-    {
-        CurrentScore++;
-        ShowScore();
-        PlayerPrefs.SetInt(CoinsKey, CurrentScore);
-    }
-
-    private void ShowScore()
-    {
-        _scoreText.text = $"{CurrentScore}";
     }
 }

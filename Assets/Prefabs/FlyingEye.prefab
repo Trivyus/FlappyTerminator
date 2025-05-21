@@ -245,6 +245,7 @@ MonoBehaviour:
   _projectileSpeed: 10
   _verticalAngleModifier: 0
   _maxVerticalAngle: 30
+  _projectileLifetime: 3
 --- !u!1 &7175810707334001112
 GameObject:
   m_ObjectHideFlags: 0

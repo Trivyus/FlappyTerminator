@@ -9,7 +9,7 @@ public class Wizard : MonoBehaviour
     [SerializeField] private ShootingSystem _shootingSystem;
     [SerializeField] private CollisionHandler _collisionHandler;
     [SerializeField] private DeathMenu _deathMenu;
-    [SerializeField] private CoinCollector _coinCollector;
+    [SerializeField] private ScoreDisplay _scoreDisplay;
     [SerializeField] private Pool<Projectile> _projectilePool;
 
     private Rigidbody2D _rigidbody;
@@ -26,8 +26,8 @@ public class Wizard : MonoBehaviour
         _shootingSystem.SetProjectilePool(_projectilePool);
         _inputReader.JumpButtonPressed += _mover.Jump;
         _inputReader.AttackButtonPressed += _shootingSystem.TryShoot;
-        _shootingSystem.Shot += _characterAnimator.TriggerAtack;
-        _collisionHandler.CollisionDetected += HandleDeath;
+        _shootingSystem.Shooted += _characterAnimator.TriggerAtack;
+        _collisionHandler.Triggered += HandleDeath;
         _characterAnimator.DeathAnimationComleted += ShowGameOverMenu;
     }
 
@@ -35,8 +35,8 @@ public class Wizard : MonoBehaviour
     {
         _inputReader.JumpButtonPressed -= _mover.Jump;
         _inputReader.AttackButtonPressed -= _shootingSystem.TryShoot;
-        _shootingSystem.Shot -= _characterAnimator.TriggerAtack;
-        _collisionHandler.CollisionDetected -= HandleDeath;
+        _shootingSystem.Shooted -= _characterAnimator.TriggerAtack;
+        _collisionHandler.Triggered -= HandleDeath;
         _characterAnimator.DeathAnimationComleted -= ShowGameOverMenu;
     }
 
@@ -80,7 +80,7 @@ public class Wizard : MonoBehaviour
 
     private void ShowGameOverMenu()
     {
-        _deathMenu.ShowPanel(_coinCollector.CurrentScore);
-        _coinCollector.ResetScore();
+        _deathMenu.ShowPanel(_scoreDisplay.CurrentScore);
+        _scoreDisplay.ResetScore();
     }
 }

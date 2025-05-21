@@ -1,24 +1,18 @@
 using System;
 using UnityEngine;
 
-public class Projectile : PoolableObject<Projectile>
+public class Projectile : PoolableObject<Projectile>, ICollisionTarget
 {
     [SerializeField] private TargetType _targetType;
 
     private Vector2 _direction;
     private float _speed;
+
     public event Action<Projectile> Triggered;
 
     private void Update()
     {
         transform.position += (Vector3)(_speed * Time.deltaTime * _direction);
-    }
-
-    public void SetDirection(Vector2 direction, float speed)
-    {
-        _speed = speed;
-        _direction = direction.normalized;
-        transform.right = _direction;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -37,5 +31,13 @@ public class Projectile : PoolableObject<Projectile>
 
         if (isTarget)
             Triggered?.Invoke(this);
+    }
+
+    public void SetDirection(Vector2 direction, float speed, Transform firePoint)
+    {
+        _speed = speed;
+        _direction = direction.normalized;
+        transform.position = firePoint.position;
+        transform.right = _direction;
     }
 }
